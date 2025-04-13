@@ -1,0 +1,58 @@
+// This is a mockup description file for the Jamaica Constabulary Force Workforce Management System
+// These mockups represent the key interfaces of the system
+
+1. Login Screen
+- Role selection for demonstration (Administrator, Supervisor, Officer)
+- Username and password fields
+- Login button
+- Biometric authentication option for mobile app
+
+2. Administrator Dashboard
+- System statistics overview (active users, shifts, tasks)
+- User management section
+- Department management section
+- System-wide reporting and analytics
+- Navigation menu for all admin functions
+
+3. Supervisor Dashboard
+- Officer tracking with map visualization
+- Shift management interface
+- Task assignment and monitoring
+- Performance reporting for department officers
+- Real-time activity feed
+
+4. Officer Dashboard
+- Current shift information
+- Check-in/check-out functionality
+- Task list with status updates
+- Schedule view for upcoming shifts
+- Location sharing controls
+- Emergency alert button
+
+5. Shift Management Screen
+- Calendar view of all shifts
+- Shift creation form
+- Officer assignment interface
+- Shift template management
+- Conflict detection and resolution
+
+6. Task Management Screen
+- Task creation form
+- Task assignment interface
+- Task status tracking
+- Priority management
+- Location mapping for tasks
+
+7. Officer Tracking Screen
+- Real-time map view of officer locations
+- Officer status indicators
+- Filter options by shift or area
+- Communication tools
+- Historical location data
+
+8. Mobile App Screens
+- Login with biometric authentication
+- Officer dashboard
+- Task management
+- Check-in/check-out with location verification
+- Emergency alert functionality

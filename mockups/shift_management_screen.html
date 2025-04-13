@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift Management - JCF Workforce Management System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        /* unvisited link */
+            a:link {
+            color: white;
+            text-decoration: none !important;
+        }
+        /* visited link */
+            a:visited {
+            color: white;
+            text-decoration: none !important;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #1a237e;
+            color: white;
+            padding: 20px 0;
+        }
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        .logo-small {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            background-color: white;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,13c-0.55,0-1-0.45-1-1V8c0-0.55,0.45-1,1-1 s1,0.45,1,1v4C13,12.55,12.55,13,12,13z M13,16c0,0.55-0.45,1-1,1s-1-0.45-1-1c0-0.55,0.45-1,1-1S13,15.45,13,16z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,13c-0.55,0-1-0.45-1-1V8c0-0.55,0.45-1,1-1 s1,0.45,1,1v4C13,12.55,12.55,13,12,13z M13,16c0,0.55-0.45,1-1,1s-1-0.45-1-1c0-0.55,0.45-1,1-1S13,15.45,13,16z'/%3E%3C/svg%3E");
+        }
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-left: 4px solid white;
+        }
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            background-color: white;
+        }
+        .dashboard-icon {
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z'/%3E%3C/svg%3E");
+        }
+        .shifts-icon {
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z'/%3E%3C/svg%3E");
+        }
+        .tasks-icon {
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+        }
+        .tracking-icon {
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/%3E%3C/svg%3E");
+        }
+        .reports-icon {
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'/%3E%3C/svg%3E");
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        .notifications {
+            position: relative;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        .notification-icon {
+            width: 24px;
+            height: 24px;
+            background-color: #666;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z'/%3E%3C/svg%3E");
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1a237e;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .user-name {
+            font-weight: 500;
+        }
+        .content-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        .card-actions {
+            display: flex;
+        }
+        .card-button {
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+        .card-button-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            background-color: white;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/%3E%3C/svg%3E");
+        }
+        .card-content {
+            padding: 20px;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+        .tab {
+            padding: 15px 20px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .tab.active {
+            color: #1a237e;
+            border-bottom: 2px solid #1a237e;
+        }
+        .calendar-container {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .calendar-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+        }
+        .calendar-nav-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .calendar-nav-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #333;
+        }
+        .prev-icon {
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z'/%3E%3C/svg%3E");
+        }
+        .next-icon {
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z'/%3E%3C/svg%3E");
+        }
+        .calendar-view-selector {
+            display: flex;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-left: 15px;
+        }
+        .calendar-view-option {
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .calendar-view-option.active {
+            background-color: #1a237e;
+            color: white;
+        }
+        .weekday-header {
+            text-align: center;
+            font-weight: 500;
+            color: #666;
+            padding: 10px 0;
+        }
+        .calendar-day {
+            min-height: 100px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 5px;
+            position: relative;
+        }
+        .calendar-day.today {
+            background-color: #e8eaf6;
+            border-color: #1a237e;
+        }
+        .calendar-day.other-month {
+            background-color: #f9f9f9;
+            color: #aaa;
+        }
+        .day-number {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .shift-item {
+            font-size: 12px;
+            padding: 3px 6px;
+            border-radius: 3px;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+        .shift-morning {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        .shift-afternoon {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        .shift-night {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .shift-special {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+        }
+        .shift-conflict {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px dashed #c62828;
+        }
+        .more-shifts {
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+            margin-top: 3px;
+        }
+        .two-column-layout {
+            display: flex;
+            gap: 20px;
+        }
+        .column {
+            flex: 1;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            min-height: 100px;
+            resize: vertical;
+        }
+        .checkbox-group {
+            margin-top: 10px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .checkbox-input {
+            margin-right: 8px;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        .form-button {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .cancel-button {
+            background-color: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .save-button {
+            background-color: #1a237e;
+            color: white;
+            border: none;
+        }
+        .officer-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .officer-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .officer-item:last-child {
+            border-bottom: none;
+        }
+        .officer-avatar-small {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #1a237e;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .officer-info-small {
+            flex: 1;
+        }
+        .officer-name-small {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .officer-badge-small {
+            font-size: 12px;
+            color: #666;
+        }
+        .officer-actions {
+            display: flex;
+        }
+        .officer-action-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        .add-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #2e7d32;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/%3E%3C/svg%3E");
+        }
+        .remove-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #c62828;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 13H5v-2h14v2z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 13H5v-2h14v2z'/%3E%3C/svg%3E");
+        }
+        .assigned-officers {
+            margin-top: 15px;
+        }
+        .assigned-officers-title {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .conflict-warning {
+            background-color: #ffebee;
+            border-left: 4px solid #c62828;
+            padding: 10px 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+        .conflict-title {
+            color: #c62828;
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .warning-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #c62828;
+            margin-right: 8px;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E");
+        }
+        .conflict-details {
+            font-size: 13px;
+            color: #666;
+        }
+        .conflict-actions {
+            display: flex;
+            margin-top: 10px;
+        }
+        .conflict-button {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .resolve-button {
+            background-color: #c62828;
+            color: white;
+            border: none;
+        }
+        .ignore-button {
+            background-color: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .template-list {
+            margin-top: 20px;
+        }
+        .template-item {
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .template-info {
+            flex: 1;
+        }
+        .template-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .template-details {
+            font-size: 13px;
+            color: #666;
+        }
+        .template-actions {
+            display: flex;
+        }
+        .template-action-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        .edit-button {
+            background-color: #e3f2fd;
+        }
+        .delete-button {
+            background-color: #ffebee;
+        }
+        .apply-button {
+            background-color: #e8f5e9;
+        }
+        .edit-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #1565c0;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/%3E%3C/svg%3E");
+        }
+        .delete-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #c62828;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z'/%3E%3C/svg%3E");
+        }
+        .apply-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #2e7d32;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            width: 500px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .modal-close {
+            width: 24px;
+            height: 24px;
+            background-color: #666;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E");
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E");
+            cursor: pointer;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <a href="login_screen.html"><div class="logo-small"></div></a>
+                <a href="login_screen.html"><div class="sidebar-title">JCF WFM</div></a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="supervisor_dashboard.html"><div class="nav-icon dashboard-icon"></div></a><a href="supervisor_dashboard.html">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="shift_management_screen.html"><div class="nav-icon shifts-icon"></div></a><a href="shift_management_screen.html">Shift Management</a>
+                </li>
+                <li class="nav-item">
+                    <a href="task_management_screen.html"><div class="nav-icon tasks-icon"></div></a><a href="task_management_screen.html">Task Management</a>
+                </li>
+                <li class="nav-item">
+                    <a href="officer_tracking_screen.html"><div class="nav-icon tracking-icon"></div></a><a href="officer_tracking_screen.html">Officer Tracking</a>
+                </li>
+                <li class="nav-item">
+                    <a href="officer_mobile_app.html"><div class="nav-icon reports-icon"></div></a><a href="officer_mobile_app.html">Mobile App Muckup</a>
+                </li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="page-title">Shift Management</div>
+                <div class="user-menu">
+                    <div class="notifications">
+                        <div class="notification-icon"></div>
+                        <div class="notification-badge">3</div>
+                    </div>
+                    <div class="user-profile">
+                        <div class="avatar">MJ</div>
+                        <div class="user-name">Maria Johnson</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="card-title">Shift Calendar</div>
+                    <div class="card-actions">
+                        <button class="card-button">
+                            <div class="card-button-icon"></div>
+                            Create Shift
+                        </button>
+                        <button class="card-button">
+                            <div class="card-button-icon"></div>
+                            Apply Template
+                        </button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="calendar-header">
+                        <div class="calendar-title">April 2025</div>
+                        <div class="calendar-nav">
+                            <div class="calendar-nav-button">
+                                <div class="calendar-nav-icon prev-icon"></div>
+                            </div>
+                            <div class="calendar-nav-button">
+                                <div class="calendar-nav-icon next-icon"></div>
+                            </div>
+                            <div class="calendar-view-selector">
+                                <div class="calendar-view-option">Day</div>
+                                <div class="calendar-view-option">Week</div>
+                                <div class="calendar-view-option active">Month</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-container">
+                        <div class="weekday-header">Sunday</div>
+                        <div class="weekday-header">Monday</div>
+                        <div class="weekday-header">Tuesday</div>
+                        <div class="weekday-header">Wednesday</div>
+                        <div class="weekday-header">Thursday</div>
+                        <div class="weekday-header">Friday</div>
+                        <div class="weekday-header">Saturday</div>
+                        
+                        <!-- Week 1 -->
+                        <div class="calendar-day other-month">
+                            <div class="day-number">30</div>
+                        </div>
+                        <div class="calendar-day other-month">
+                            <div class="day-number">31</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">1</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">2</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">3</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">4</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">5</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        
+                        <!-- Week 2 -->
+                        <div class="calendar-day">
+                            <div class="day-number">6</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">7</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">8</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">9</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">10</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">11</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">12</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        
+                        <!-- Week 3 -->
+                        <div class="calendar-day today">
+                            <div class="day-number">13</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                            <div class="shift-item shift-special">Special Event (8)</div>
+                            <div class="more-shifts">+2 more</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">14</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">15</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                            <div class="shift-item shift-conflict">Conflict Detected!</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">16</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">17</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">18</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">19</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        
+                        <!-- Week 4 -->
+                        <div class="calendar-day">
+                            <div class="day-number">20</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">21</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">22</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">23</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">24</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">25</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">26</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        
+                        <!-- Week 5 -->
+                        <div class="calendar-day">
+                            <div class="day-number">27</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">28</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">29</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="day-number">30</div>
+                            <div class="shift-item shift-morning">Morning Patrol (4)</div>
+                            <div class="shift-item shift-afternoon">Afternoon Patrol (3)</div>
+                            <div class="shift-item shift-night">Night Patrol (5)</div>
+                        </div>
+                        <div class="calendar-day other-month">
+                            <div class="day-number">1</div>
+                        </div>
+                        <div class="calendar-day other-month">
+                            <div class="day-number">2</div>
+                        </div>
+                        <div class="calendar-day other-month">
+                            <div class="day-number">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="two-column-layout">
+                <div class="column">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <div class="card-title">Create Shift</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label class="form-label">Shift Title</label>
+                                <input type="text" class="form-input" placeholder="e.g., Morning Patrol" value="Morning Patrol">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Shift Type</label>
+                                <select class="form-select">
+                                    <option>Regular Patrol</option>
+                                    <option>Traffic Control</option>
+                                    <option>Special Event</option>
+                                    <option>Investigation</option>
+                                    <option>Administrative</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Location/Area</label>
+                                <input type="text" class="form-input" placeholder="e.g., North Kingston" value="North Kingston">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Date</label>
+                                <input type="date" class="form-input" value="2025-04-15">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Time</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="time" class="form-input" value="08:00">
+                                    <input type="time" class="form-input" value="16:00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Required Skills</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" class="checkbox-input" id="skill1" checked>
+                                        <label for="skill1">Patrol</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" class="checkbox-input" id="skill2">
+                                        <label for="skill2">Traffic Management</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" class="checkbox-input" id="skill3">
+                                        <label for="skill3">Investigation</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" class="checkbox-input" id="skill4">
+                                        <label for="skill4">Firearms</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-textarea" placeholder="Enter shift details...">Regular morning patrol in the North Kingston area. Officers should focus on commercial districts and school zones during peak hours.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Minimum Required Officers</label>
+                                <input type="number" class="form-input" value="4">
+                            </div>
+                            <div class="form-actions">
+                                <button class="form-button cancel-button">Cancel</button>
+                                <button class="form-button save-button">Save Shift</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="column">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <div class="card-title">Officer Assignment</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label class="form-label">Search Officers</label>
+                                <input type="text" class="form-input" placeholder="Search by name or badge number...">
+                            </div>
+                            
+                            <div class="officer-list">
+                                <div class="officer-item">
+                                    <div class="officer-avatar-small">RB</div>
+                                    <div class="officer-info-small">
+                                        <div class="officer-name-small">Robert Brown</div>
+                                        <div class="officer-badge-small">Badge: JCF1003</div>
+                                    </div>
+                                    <div class="officer-actions">
+                                        <div class="officer-action-button">
+                                            <div class="add-icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="officer-item">
+                                    <div class="officer-avatar-small">SW</div>
+                                    <div class="officer-info-small">
+                                        <div class="officer-name-small">Sarah Williams</div>
+                                        <div class="officer-badge-small">Badge: JCF1004</div>
+                                    </div>
+                                    <div class="officer-actions">
+                                        <div class="officer-action-button">
+                                            <div class="add-icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="officer-item">
+                                    <div class="officer-avatar-small">JD</div>
+                                    <div class="officer-info-small">
+                                        <div class="officer-name-small">James Davis</div>
+                                        <div class="officer-badge-small">Badge: JCF1005</div>
+                                    </div>
+                                    <div class="officer-actions">
+                                        <div class="officer-action-button">
+                                            <div class="add-icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="officer-item">
+                                    <div class="officer-avatar-small">LA</div>
+                                    <div class="officer-info-small">
+                                        <div class="officer-name-small">Lisa Anderson</div>
+                                        <div class="officer-badge-small">Badge: JCF1008</div>
+                                    </div>
+                                    <div class="officer-actions">
+                                        <div class="officer-action-button">
+                                            <div class="add-icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="officer-item">
+                                    <div class="officer-avatar-small">MT</div>
+                                    <div class="officer-info-small">
+                                        <div class="officer-name-small">Michael Thompson</div>
+                                        <div class="officer-badge-small">Badge: JCF1010</div>
+                                    </div>
+                                    <div class="officer-actions">
+                                        <div class="officer-action-button">
+                                            <div class="add-icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="assigned-officers">
+                                <div class="assigned-officers-title">Assigned Officers (3/4)</div>
+                                <div class="officer-list">
+                                    <div class="officer-item">
+                                        <div class="officer-avatar-small">KJ</div>
+                                        <div class="officer-info-small">
+                                            <div class="officer-name-small">Kevin Johnson</div>
+                                            <div class="officer-badge-small">Badge: JCF1002</div>
+                                        </div>
+                                        <div class="officer-actions">
+                                            <div class="officer-action-button">
+                                                <div class="remove-icon"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="officer-item">
+                                        <div class="officer-avatar-small">DP</div>
+                                        <div class="officer-info-small">
+                                            <div class="officer-name-small">David Parker</div>
+                                            <div class="officer-badge-small">Badge: JCF1007</div>
+                                        </div>
+                                        <div class="officer-actions">
+                                            <div class="officer-action-button">
+                                                <div class="remove-icon"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="officer-item">
+                                        <div class="officer-avatar-small">EW</div>
+                                        <div class="officer-info-small">
+                                            <div class="officer-name-small">Emily Wilson</div>
+                                            <div class="officer-badge-small">Badge: JCF1009</div>
+                                        </div>
+                                        <div class="officer-actions">
+                                            <div class="officer-action-button">
+                                                <div class="remove-icon"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="conflict-warning">
+                                <div class="conflict-title">
+                                    <div class="warning-icon"></div>
+                                    Scheduling Conflict Detected
+                                </div>
+                                <div class="conflict-details">
+                                    <strong>Emily Wilson (JCF1009)</strong> is already assigned to <strong>Traffic Control</strong> shift on <strong>April 15, 2025</strong> from <strong>10:00 AM to 6:00 PM</strong>, which overlaps with this shift.
+                                </div>
+                                <div class="conflict-actions">
+                                    <button class="conflict-button resolve-button">Resolve Conflict</button>
+                                    <button class="conflict-button ignore-button">Ignore</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card" style="margin-top: 20px;">
+                        <div class="card-header">
+                            <div class="card-title">Shift Templates</div>
+                            <div class="card-actions">
+                                <button class="card-button">
+                                    <div class="card-button-icon"></div>
+                                    New Template
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="template-list">
+                                <div class="template-item">
+                                    <div class="template-info">
+                                        <div class="template-name">Standard Weekday Shifts</div>
+                                        <div class="template-details">Morning, Afternoon, and Night patrols for all districts</div>
+                                    </div>
+                                    <div class="template-actions">
+                                        <div class="template-action-button edit-button">
+                                            <div class="edit-icon"></div>
+                                        </div>
+                                        <div class="template-action-button delete-button">
+                                            <div class="delete-icon"></div>
+                                        </div>
+                                        <div class="template-action-button apply-button">
+                                            <div class="apply-icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-item">
+                                    <div class="template-info">
+                                        <div class="template-name">Weekend Coverage</div>
+                                        <div class="template-details">Enhanced coverage for weekend nights and tourist areas</div>
+                                    </div>
+                                    <div class="template-actions">
+                                        <div class="template-action-button edit-button">
+                                            <div class="edit-icon"></div>
+                                        </div>
+                                        <div class="template-action-button delete-button">
+                                            <div class="delete-icon"></div>
+                                        </div>
+                                        <div class="template-action-button apply-button">
+                                            <div class="apply-icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-item">
+                                    <div class="template-info">
+                                        <div class="template-name">Holiday Schedule</div>
+                                        <div class="template-details">Special coverage for public holidays and events</div>
+                                    </div>
+                                    <div class="template-actions">
+                                        <div class="template-action-button edit-button">
+                                            <div class="edit-icon"></div>
+                                        </div>
+                                        <div class="template-action-button delete-button">
+                                            <div class="delete-icon"></div>
+                                        </div>
+                                        <div class="template-action-button apply-button">
+                                            <div class="apply-icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for Conflict Resolution (hidden by default) -->
+    <div class="modal-overlay" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title">Resolve Scheduling Conflict</div>
+                <div class="modal-close"></div>
+            </div>
+            <div class="modal-body">
+                <div class="conflict-details" style="margin-bottom: 20px;">
+                    <strong>Emily Wilson (JCF1009)</strong> is already assigned to <strong>Traffic Control</strong> shift on <strong>April 15, 2025</strong> from <strong>10:00 AM to 6:00 PM</strong>, which overlaps with this shift.
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Resolution Options</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="resolution" id="res1" checked>
+                            <label for="res1">Remove Emily Wilson from this shift</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="resolution" id="res2">
+                            <label for="res2">Remove Emily Wilson from Traffic Control shift</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="resolution" id="res3">
+                            <label for="res3">Adjust this shift time to avoid conflict</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="resolution" id="res4">
+                            <label for="res4">Adjust Traffic Control shift time to avoid conflict</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-textarea" placeholder="Add notes about this resolution..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="form-button cancel-button">Cancel</button>
+                <button class="form-button save-button">Apply Resolution</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
