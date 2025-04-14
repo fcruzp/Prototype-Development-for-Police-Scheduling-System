@@ -66,8 +66,10 @@ router.get('/protected-route', authenticate, (req, res) => {
 });
 
 module.exports = {
-  verifyToken,
+  authenticate: verifyToken, // Export verifyToken as authenticate
   isAdmin,
   isSupervisor,
   router
 };
+
+console.log('Middleware exports:', module.exports);
