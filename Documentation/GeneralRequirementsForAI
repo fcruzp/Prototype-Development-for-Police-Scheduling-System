@@ -1,0 +1,110 @@
+# Jamaica Constabulary Force Workforce Management System
+# Executive Summary
+
+## Project Overview WEB Version
+
+The Jamaica Constabulary Force (JCF) Workforce Management System is a comprehensive solution designed to streamline shift scheduling, task assignment, attendance tracking, and performance monitoring for police departments. This prototype has been developed based on the requirements provided by the JCF to address their specific needs for efficient workforce management.
+
+## Key Features
+
+1. **User Management**
+   - Role-based access control (Admin, Supervisor, Officer)
+   - Department-based organization
+   - Secure authentication with biometric verification for mobile users
+
+2. **Shift Management**
+   - Create shift templates with flexible scheduling options
+   - Assign officers to shifts based on availability and skills
+   - View shift schedules in calendar and list formats
+
+3. **Task Assignment**
+   - Create and assign tasks to officers
+   - Track task status and completion
+   - Prioritize tasks based on urgency and importance
+
+4. **Real-time Geolocation**
+   - Track officer locations in real-time
+   - Visualize officer distribution on interactive maps
+   - Optimize resource allocation based on location data
+
+5. **Attendance Tracking**
+   - Check-in/check-out with geolocation verification
+   - Monitor attendance patterns and punctuality
+   - Generate attendance reports for performance evaluation
+
+6. **Performance Analytics**
+   - Track key performance indicators for officers and departments
+   - Generate comprehensive reports on various metrics
+   - Identify trends and areas for improvement
+
+
+# Functional Requirements
+
+1. **Administration Module**
+- User and Role Management: Access and permission control
+- Shift Configuration: Creation and parameterization of schedules
+- Resource Allocation: Distribution of personnel and equipment
+- Leave Management: Approval of absences
+- Operational Reports: Attendance and performance statistics
+
+2. **Supervision Module**
+- Real-Time Monitoring: Personnel location and status
+- Shift Compliance Supervision: Validation of assigned shifts
+- Incident Management: Logging and escalation of critical events
+- Performance Analysis: Evaluation of operational indicators
+- Communication with Officers: Messaging and real-time alerts
+
+3. **Officer Module (Web version)**
+- Shift and Assignment Consultation
+- Geolocation and Service Status
+- Incident Logging with Photos/Videos
+- Direct Communication with Supervisors
+- Real-Time Notifications and Alerts
+
+4. **Specific Features**
+- Shift Summary and Personnel Status View
+- Quick Access to Management Actions
+- Team Performance Dashboard
+- Mobile App User Dashboard
+- Data Export for HR Integration
+- Platoon View
+- Calendar View
+- Day View
+- My Schedule View
+- Shift Change Management
+- Minimum Staffing Level Configuration
+- Day and Shift Notes
+- Calendar Editor
+- Unplanned Absences Management
+- Availability Management
+- Time-Off Request
+- Permission Notifications
+- Permission Policy Management
+- Permission History
+- Open Shifts View
+- Open Shift Assignment
+- Assignment Route & Map
+
+5. **Key Performance Indicators (KPIs)**
+- Shift Coverage Rate: Percentage of shifts covered vs. required
+- On-Time Shift Start Rate: Percentage of shifts started on time
+- Overtime Hours: Total and individual overtime tracking
+- Absenteeism Rate: Percentage of unplanned absences
+- Task Completion Rate: Percentage of completed assignments vs. assigned
+- Assignment Response Time: Time taken to accept and start new tasks
+- Leave Utilization: Balance of available vs. used leave days
+
+
+
+## Technology Stack
+
+The system proptotype have to use modern, scalable technologies like:
+
+
+### Frontend (Web)
+- React.js with TypeScript
+- Next.JS
+- Any package manager as NPM
+- Tailwind CSS and Tremor Components
+- Mapbox, Google Maps or Bing Maps for geolocation visualization
+
